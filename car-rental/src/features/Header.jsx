@@ -5,9 +5,22 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import logoImg from '/src/assets/download.png'
-import { FaAddressBook, FaCar, FaCarSide, FaHome, FaLock, FaPenAlt, FaSearch } from "react-icons/fa";
-import { Link, NavLink } from 'react-router-dom';
+import { FaAddressBook, FaArrowAltCircleLeft, FaCar, FaCarSide, FaHome, FaListAlt, FaLock, FaPenAlt, FaSearch, FaShoppingCart } from "react-icons/fa";
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase/config';
+import { toast } from 'react-toastify';
 const Header = () => {
+  const navigate=useNavigate()
+
+  let handleLogout=()=>{
+    signOut(auth).then(() => {
+      toast.success("loggedOut successfully")
+      navigate('/')
+    }).catch((error) => {
+      toast.error(error.message)
+    });
+  }
   return (
    <>
      <Navbar expand="lg" bg="dark" data-bs-theme="dark">
@@ -42,8 +55,17 @@ const Header = () => {
             </InputGroup>
       </Form>
           <Nav>
+          <Nav.Link as={Link} to='/'><FaShoppingCart size={30}/>
+            <span class="badge rounded-pill text-bg-danger">0</span >
+            
+          </Nav.Link>
+
             <Nav.Link as={Link} to='/login'><FaLock/> Login</Nav.Link>
             <Nav.Link as={Link} to='/register'><FaPenAlt /> Register</Nav.Link>
+
+            <Nav.Link >Welcome Guest </Nav.Link>
+            <Nav.Link as={Link} to='/'><FaListAlt/> My Orders</Nav.Link>
+            <Nav.Link onClick={handleLogout}><FaArrowAltCircleLeft /> Logout</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
