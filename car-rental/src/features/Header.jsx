@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Form, Image, InputGroup } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -7,7 +7,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import logoImg from '/src/assets/download.png'
 import { FaAddressBook, FaArrowAltCircleLeft, FaCar, FaCarSide, FaHome, FaListAlt, FaLock, FaPenAlt, FaSearch, FaShoppingCart } from "react-icons/fa";
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { signOut } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../firebase/config';
 import { toast } from 'react-toastify';
 const Header = () => {
@@ -21,6 +21,17 @@ const Header = () => {
       toast.error(error.message)
     });
   }
+
+  useEffect(()=>{
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+          const uid = user.uid;
+          
+      } else {
+ 
+      }
+    });
+  },[auth])
   return (
    <>
      <Navbar expand="lg" bg="dark" data-bs-theme="dark">

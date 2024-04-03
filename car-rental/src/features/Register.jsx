@@ -4,30 +4,43 @@ import { FaPenSquare } from 'react-icons/fa'
 import RegisterImg from '/src/assets/register.png'
 import { Link, useNavigate } from 'react-router-dom'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../firebase/config'
+import { auth, db } from '../firebase/config'
 import { toast } from 'react-toastify'
+import { Timestamp, doc, setDoc } from 'firebase/firestore'
+import Loader from './Loader'
 
 
 const Register = () => {
   const redirect=useNavigate()
   let initialState={username:'',email:'',password:'',cpassword:'',mobile:'',role:"1"}
   let [user,setUser]=useState({...initialState}) //state object
+  let [isLoading,setIsLoading]=useState(false)
   let handleSubmit=(e)=>{
     e.preventDefault()
+    setIsLoading(true)
     createUserWithEmailAndPassword(auth, user.email, user.password)
-      .then((userCredential) => {
+      .then(async(userCredential) => {
         const user1 = userCredential.user;
-        toast.success("registered successfully")
-        //redirect home page 
-        redirect('/')
+        try{
+          const docRef=doc(db,"users",user1.uid)
+           await setDoc(docRef,{...user,createdAt:Timestamp.now().toMillis()})
+            toast.success("registered successfully")
+            //redirect home page 
+            redirect('/')
+            setIsLoading(false)
+        }
+        catch(error){setIsLoading(false)
+          toast.error(error.message)
+        }      
       })
-      .catch((error) => {
+      .catch((error) => {setIsLoading(false)
         toast.error(error.message)
       });
     }
   return (
     <>
       <Container className='mt-5 shadow p-2'>
+        {isLoading && <Loader/>}
         <h1><FaPenSquare/> Register Here</h1>
         <hr/>
             <Row>

@@ -4,33 +4,65 @@ import { FaLock, FaPenSquare } from 'react-icons/fa'
 import RegisterImg from '/src/assets/register.png'
 import { Link, useNavigate } from 'react-router-dom'
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
-import { auth } from '../firebase/config'
+import { auth, db } from '../firebase/config'
 import { toast } from 'react-toastify'
+import { Timestamp, doc, getDoc, setDoc } from 'firebase/firestore'
+import Loader from './Loader'
 
 const Login = () => {
   const redirect=useNavigate()
   let initialState={email:'',password:''}
   let [user,setUser]=useState({...initialState}) //state object
+  let [isLoading,setIsLoading]=useState(false)
   let handleSubmit=(e)=>{
     e.preventDefault()
+    setIsLoading(true)
     signInWithEmailAndPassword(auth, user.email, user.password)
-    .then((userCredential) => {
+    .then(async(userCredential) => {
       const user1 = userCredential.user;
-      toast.success('loggedIn Successfully')
-      redirect('/')
+      try{
+        const docRef=doc(db,"users",user1.uid)
+        const docSnap=await getDoc(docRef)
+        if(docSnap.exists()){
+          // console.log(docSnap.data().role)
+          let role=docSnap.data().role
+          if(role=='0'){
+            toast.success('loggedIn Successfully')
+            redirect('/admin')
+          }
+          else if(role=="1"){
+            toast.success('loggedIn Successfully')
+            redirect('/')
+          }
+        }
+        setIsLoading(false)
+      }
+      catch(error){
+        setIsLoading(false)
+        toast.error(error.message)
+      }
+      
     })
     .catch((error) => {
+      setIsLoading(false)
      toast.error(error.message)
     });
     }
     const provider = new GoogleAuthProvider();
     let loginWithGoogle=()=>{
       signInWithPopup(auth, provider)
-      .then((result) => {
+      .then(async(result) => {
           const user = result.user;
-          toast.success('loggedIn Successfully')
-          redirect('/')
-       
+          let obj={username:user.displayName,email:user.email,role:"1",createdAt:Timestamp.now().toMillis()}
+          try{
+            const docRef=doc(db,"users",user.uid)
+             await setDoc(docRef,obj)
+             toast.success('loggedIn Successfully')
+              redirect('/')
+          }
+          catch(error){
+            toast.error(error.message)
+          }                   
       }).catch((error) => {
         toast.error(error.message)
       });
@@ -38,6 +70,7 @@ const Login = () => {
   return (
     <>
       <Container className='mt-5 shadow p-2'>
+        {isLoading && <Loader/>}
         <h1><FaLock/> Login Here</h1>
         <hr/>
             <Row>

@@ -8,6 +8,7 @@ import Login from "./features/Login";
 import Register from "./features/Register";
 import PageNotFound from "./features/PageNotFound";
 import { UserLayout } from "./features/hiddenlinks";
+import Dashboard from "./features/Admin/Dashboard";
 
 const router = createBrowserRouter([
     {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
         {path:"cars",element:<Cars/>},
         {path:"login" , element:<Login/>},
         {path:"register",element:<Register/>},
+        {path:'admin' , element:<Dashboard/>},
 
         {path:'*',element:<PageNotFound/>}
       ],
