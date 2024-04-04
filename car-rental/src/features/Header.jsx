@@ -8,10 +8,15 @@ import logoImg from '/src/assets/download.png'
 import { FaAddressBook, FaArrowAltCircleLeft, FaCar, FaCarSide, FaHome, FaListAlt, FaLock, FaPenAlt, FaSearch, FaShoppingCart } from "react-icons/fa";
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from '../firebase/config';
+import { auth, db } from '../firebase/config';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginuser, logoutuser, selectUserName } from '../redux/authSlice';
+import { doc, getDoc } from 'firebase/firestore';
+import { ShowOnLogIn, ShowOnLogout } from './hiddenlinks';
 const Header = () => {
   const navigate=useNavigate()
+  const dispatch=useDispatch()
 
   let handleLogout=()=>{
     signOut(auth).then(() => {
@@ -23,15 +28,23 @@ const Header = () => {
   }
 
   useEffect(()=>{
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async(user) => {
       if (user) {
           const uid = user.uid;
-          
-      } else {
- 
-      }
+            //loginuser 
+            const docRef=doc(db,"users",uid)
+            const docSnap=await getDoc(docRef)
+            let obj={name:docSnap.data().username,email:docSnap.data().email,
+            role:docSnap.data().role,id:uid}
+            dispatch(loginuser(obj))
+        } else {
+          //logout
+          dispatch(logoutuser())
+        }
     });
   },[auth])
+
+  const username=useSelector(selectUserName)
   return (
    <>
      <Navbar expand="lg" bg="dark" data-bs-theme="dark">
@@ -70,13 +83,15 @@ const Header = () => {
             <span class="badge rounded-pill text-bg-danger">0</span >
             
           </Nav.Link>
-
-            <Nav.Link as={Link} to='/login'><FaLock/> Login</Nav.Link>
-            <Nav.Link as={Link} to='/register'><FaPenAlt /> Register</Nav.Link>
-
-            <Nav.Link >Welcome Guest </Nav.Link>
-            <Nav.Link as={Link} to='/'><FaListAlt/> My Orders</Nav.Link>
-            <Nav.Link onClick={handleLogout}><FaArrowAltCircleLeft /> Logout</Nav.Link>
+            <ShowOnLogout>
+                <Nav.Link as={Link} to='/login'><FaLock/> Login</Nav.Link>
+                <Nav.Link as={Link} to='/register'><FaPenAlt /> Register</Nav.Link>
+            </ShowOnLogout>
+            <ShowOnLogIn>
+                <Nav.Link >Welcome {username ? <>{username}</>:"Guest"} </Nav.Link>
+                <Nav.Link as={Link} to='/'><FaListAlt/> My Orders</Nav.Link>
+                <Nav.Link onClick={handleLogout}><FaArrowAltCircleLeft /> Logout</Nav.Link>
+            </ShowOnLogIn>
           </Nav>
         </Navbar.Collapse>
       </Container>
