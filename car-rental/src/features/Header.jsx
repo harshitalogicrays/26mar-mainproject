@@ -13,19 +13,11 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginuser, logoutuser, selectUserName } from '../redux/authSlice';
 import { doc, getDoc } from 'firebase/firestore';
-import { ShowOnLogIn, ShowOnLogout } from './hiddenlinks';
+import { Logout, ShowOnLogIn, ShowOnLogout } from './hiddenlinks';
 const Header = () => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
 
-  let handleLogout=()=>{
-    signOut(auth).then(() => {
-      toast.success("loggedOut successfully")
-      navigate('/')
-    }).catch((error) => {
-      toast.error(error.message)
-    });
-  }
 
   useEffect(()=>{
     onAuthStateChanged(auth, async(user) => {
@@ -47,7 +39,7 @@ const Header = () => {
   const username=useSelector(selectUserName)
   return (
    <>
-     <Navbar expand="lg" bg="dark" data-bs-theme="dark">
+     <Navbar expand="lg" bg="light" data-bs-theme="dark">
       <Container fluid>
         <Navbar.Brand href="">
             <Image src={logoImg} height={40} width={40} />
@@ -90,7 +82,7 @@ const Header = () => {
             <ShowOnLogIn>
                 <Nav.Link >Welcome {username ? <>{username}</>:"Guest"} </Nav.Link>
                 <Nav.Link as={Link} to='/'><FaListAlt/> My Orders</Nav.Link>
-                <Nav.Link onClick={handleLogout}><FaArrowAltCircleLeft /> Logout</Nav.Link>
+                <Nav.Link ><Logout/></Nav.Link>
             </ShowOnLogIn>
           </Nav>
         </Navbar.Collapse>
