@@ -11,6 +11,8 @@ import { AdminLayout, ProtectedAdmin, UserLayout } from "./features/hiddenlinks"
 import Dashboard from "./features/Admin/Dashboard";
 import AdminHeader from "./features/Admin/AdminHeader";
 import AddCar from "./features/Admin/Car/AddCar";
+import AddBrand from "./features/Admin/AddBrand";
+import ViewBrand from "./features/Admin/ViewBrand";
 
 const router = createBrowserRouter([
     {
@@ -23,9 +25,12 @@ const router = createBrowserRouter([
         {path:"cars",element:<Cars/>},
         {path:"login" , element:<Login/>},
         {path:"register",element:<Register/>},
-        {path:'admin' , element:<ProtectedAdmin><AdminLayout/></ProtectedAdmin>,
+        {path:'admin' , element:<AdminLayout/>,
       children:[
           {path:'',element:<Dashboard/>},
+          {path:'addbrand',element:<AddBrand/>},
+          {path:'viewbrand',element:<ViewBrand/>},
+
           {path:'addcar',element:<AddCar/>}
       ]},
 

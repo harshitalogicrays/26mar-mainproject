@@ -64,12 +64,18 @@ const Header = () => {
             </NavDropdown>
             <Nav.Link as={Link} to='/contact'><FaAddressBook/> contact us</Nav.Link>
           </Nav>
+          <Nav  className="me-auto">
+            <Link to='/admin'  type="button"  class="btn btn-primary"  >
+              Admin Panel
+            </Link>
+            
+          </Nav>
           <Form>
             <InputGroup>
             <Form.Control type="text" placeholder="Search" className=" mr-sm-2" />            
             <Button type="submit" variant='danger'><FaSearch/></Button>
             </InputGroup>
-      </Form>
+      </Form> 
           <Nav>
           <Nav.Link as={Link} to='/'><FaShoppingCart size={30}/>
             <span class="badge rounded-pill text-bg-danger">0</span >

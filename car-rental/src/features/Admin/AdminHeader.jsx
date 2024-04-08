@@ -20,7 +20,9 @@ const AdminHeader = () => {
             <div id="content-wrapper" className="d-flex flex-column">
                 <div id="content">
                      <Navbar/>
-                    <div className="container-fluid"><Outlet/></div>
+                    <div className="container col-10">
+                        <Outlet/>
+                        </div>
                 </div>
                 <Footer/>
             </div>
