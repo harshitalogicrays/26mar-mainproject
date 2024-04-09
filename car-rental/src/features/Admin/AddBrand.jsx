@@ -1,28 +1,56 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import BrandImg from '/src/assets/admin/img/brand.png'
-import { Link,useNavigate } from 'react-router-dom'
+import { Link,useNavigate ,useParams} from 'react-router-dom'
 import {toast} from 'react-toastify'
-import { Timestamp, addDoc, collection } from 'firebase/firestore'
+import { Timestamp, addDoc, collection, doc, setDoc } from 'firebase/firestore'
 import { db } from '../../firebase/config'
+import { selectBrands } from '../../redux/brandSlice'
+import {useSelector} from 'react-redux'
 const AddBrand = () => {
+    const {id}=  useParams()
+    console.log(id)
     const [brand,setBrand]=useState({name:'',desc:''})
     const navigate=useNavigate()
+
+    const allbrands=useSelector(selectBrands)
+    useEffect(()=>{
+        if(id){
+           let mybrand = allbrands.find(item=>item.id==id)
+           setBrand(mybrand)
+        }
+        else setBrand({name:'',desc:''})
+    },[id])
+
     let handleSubmit=async(e)=>{
         e.preventDefault()
-        try{
-            const docRef=collection(db,"brands")
-            await addDoc(docRef,{...brand,createdAt:Timestamp.now().toMillis()})
-            toast.success('Brand Added')
-            navigate('/admin/viewbrand')
+        if(!id){//add
+            try{
+                const docRef=collection(db,"brands")
+                await addDoc(docRef,{...brand,createdAt:Timestamp.now().toMillis()})
+                toast.success('Brand Added')
+                navigate('/admin/viewbrand')
+            }
+            catch(error){
+                toast.error(error.message)
+            }
         }
-        catch(error){
-            toast.error(error.message)
+        else { //update
+            try{
+                const docRef=doc(db,"brands",id)
+                await setDoc(docRef,{...brand,createdAt:brand.createdAt,editedAt:Timestamp.now().toMillis()})
+                toast.success('Brand updated')
+                navigate('/admin/viewbrand')
+            }
+            catch(error){
+                toast.error(error.message)
+            }
         }
+        
     }
   return (
     <div class="card">
         <div class="card-header">
-            <h1>Add Brand <Link  type="button" class="btn btn-primary float-end"  to='/admin/viewbrand' >
+            <h1>{id?"Edit ":"Add "}Brand <Link  type="button" class="btn btn-primary float-end"  to='/admin/viewbrand' >
                 View Brands
             </Link>
             </h1>
@@ -41,13 +69,14 @@ const AddBrand = () => {
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Description</label>
-                    <textarea class="form-control" name="desc" value={brand.desc} onChange={(e)=>setBrand({...brand,desc:e.target.value})}></textarea>
+                    <textarea class="form-control" name="desc" value={brand.desc} onChange={(e)=>setBrand({...brand,desc:e.target.value})} rows={10}></textarea>
                 </div>
                 <button
                     type="submit"
                     class="btn btn-primary"
                 >
-                    Submit
+                    {id? "Update ": "Submit"}
+                    
                 </button>
                 
                 

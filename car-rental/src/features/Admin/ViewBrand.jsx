@@ -4,6 +4,9 @@ import useFetchCollection from '../../customhook/useFetchCollection'
 import {useDispatch,useSelector} from 'react-redux'
 import { STORE_BRANDS, selectBrands } from '../../redux/brandSlice'
 import { FaPenAlt, FaTrashAlt } from 'react-icons/fa'
+import {toast} from 'react-toastify'
+import { deleteDoc, doc } from 'firebase/firestore'
+import { db } from '../../firebase/config'
 const ViewBrand = () => {
    const {data} = useFetchCollection("brands")
     const dispatch=useDispatch()
@@ -12,6 +15,17 @@ const ViewBrand = () => {
    },[data])
 
    const allbrands=useSelector(selectBrands)
+
+   let handleDelete=async(id)=>{
+        if(window.confirm("Are you sure to delete this??")){
+            try{
+                 const docRef= doc(db,"brands",id)
+                 await deleteDoc(docRef)
+                 toast.success("brand deleted")
+            }
+            catch(error){toast.error(error.message)}
+        }
+   }
   return (
     <div class="card">
         <div class="card-header">
@@ -40,15 +54,16 @@ const ViewBrand = () => {
                                 <td>{brand.name}</td>
                                 <td>{brand.desc}</td>
                                 <td>
-                                    <button
+                                    <Link to={`/admin/editbrand/${brand.id}`}
                                         type="button"
                                         class="btn btn-success me-2"
                                     >
                                         <FaPenAlt/>
-                                    </button>
+                                    </Link>
                                     <button
                                         type="button"
-                                        class="btn btn-danger"
+                                        class="btn btn-danger" 
+                                        onClick={()=>handleDelete(brand.id)}
                                     >
                                         <FaTrashAlt/>
                                     </button>
