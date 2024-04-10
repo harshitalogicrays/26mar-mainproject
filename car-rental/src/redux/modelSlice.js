@@ -9,6 +9,6 @@ const modelSlice=createSlice({
         }
     }
 })
-export const {STORE_modelS}=modelSlice.actions
+export const {STORE_MODELS}=modelSlice.actions
 export default modelSlice.reducer
 export const selectmodels=state=>state.model.models

@@ -5,6 +5,7 @@ import { Timestamp, addDoc, collection, doc, setDoc } from 'firebase/firestore'
 import { db } from '../../firebase/config'
 import {useSelector} from 'react-redux'
 import useFetchCollection from '../../customhook/useFetchCollection'
+import { selectmodels } from '../../redux/modelSlice'
 
 const AddModel = () => {
     const {data:brands} =useFetchCollection("brands")
@@ -14,12 +15,19 @@ const AddModel = () => {
     const [isActive,setIsActive]=useState(false)
     const navigate=useNavigate()
 
+    const allModels=useSelector(selectmodels)
     useEffect(()=>{
-
+        if(id){
+           const model= allModels.find(item=>item.id==id)
+           setModel(model)
+           setIsActive(model.status=='active'?true:false)
+        }
+        else {setModel({brand:'',name:'',desc:'',status:''})}
     },[id])
 
     let handleSubmit=async(e)=>{
         e.preventDefault()
+        if(!id){
         try{
             const docRef=collection(db,"models")
             await addDoc(docRef,{...model,
@@ -32,6 +40,22 @@ const AddModel = () => {
         catch(error){
             toast.error(error.message)
         }
+    }
+    else {
+        try{
+            const docRef=doc(db,"models",id)
+            await setDoc(docRef,{...model,
+                status:isActive ? "active" : "inactive",
+                createdAt:model.createdAt,
+                editedAt:Timestamp.now().toMillis()
+            })
+            toast.success("model updated")
+            navigate('/admin/viewmodel')
+        }
+        catch(error){
+            toast.error(error.message)
+        }
+    }
          }
   return (
     <div class="card">
