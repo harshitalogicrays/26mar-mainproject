@@ -11,7 +11,7 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase/config';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginuser, logoutuser, selectUserName } from '../redux/authSlice';
+import { loginuser, logoutuser, selectUserName, selectUserRole } from '../redux/authSlice';
 import { doc, getDoc } from 'firebase/firestore';
 import { Logout, ShowOnLogIn, ShowOnLogout } from './hiddenlinks';
 const Header = () => {
@@ -37,6 +37,7 @@ const Header = () => {
   },[auth])
 
   const username=useSelector(selectUserName)
+  const userrole=useSelector(selectUserRole)
   return (
    <>
      <Navbar expand="lg" bg="light" data-bs-theme="dark">
@@ -64,12 +65,14 @@ const Header = () => {
             </NavDropdown>
             <Nav.Link as={Link} to='/contact'><FaAddressBook/> contact us</Nav.Link>
           </Nav>
+            {userrole=="0"  &&
           <Nav  className="me-auto">
             <Link to='/admin'  type="button"  class="btn btn-primary"  >
               Admin Panel
             </Link>
             
           </Nav>
+}
           <Form>
             <InputGroup>
             <Form.Control type="text" placeholder="Search" className=" mr-sm-2" />            

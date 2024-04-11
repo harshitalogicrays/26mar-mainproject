@@ -15,6 +15,7 @@ import AddBrand from "./features/Admin/AddBrand";
 import ViewBrand from "./features/Admin/ViewBrand";
 import AddModel from "./features/Admin/AddModel";
 import ViewModel from "./features/Admin/ViewModel";
+import ViewCar from "./features/Admin/Car/ViewCar";
 
 const router = createBrowserRouter([
     {
@@ -36,7 +37,8 @@ const router = createBrowserRouter([
           {path:'addmodel',element:<AddModel/>},
           {path:'viewmodel',element:<ViewModel/>},
           {path:'editmodel/:id',element:<AddModel/>},
-          {path:'addcar',element:<AddCar/>}
+          {path:'addcar',element:<AddCar/>},
+          {path:'viewcar',element:<ViewCar/>}
       ]},
 
         {path:'*',element:<PageNotFound/>}
