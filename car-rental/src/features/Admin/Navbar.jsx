@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import Login from '../Login';
 import { Logout } from '../hiddenlinks';
+import { useSelector } from 'react-redux';
+import { selectUserName } from '../../redux/authSlice';
 
 const Navbar = () => {
+    let username=useSelector(selectUserName)
     const [style, setStyle] = useState("navbar-nav bg-gradient-primary sidebar sidebar-dark accordion  ");
     const changeStyle1 = () => {
         if (style == "navbar-nav bg-gradient-primary sidebar sidebar-dark accordion")
@@ -63,14 +66,14 @@ const Navbar = () => {
                             </li>
 
                             {/*  <!-- Nav Item - Alerts --> */}
-                            <li className="nav-item dropdown no-arrow mx-1">
+                            {/* <li className="nav-item dropdown no-arrow mx-1">
                                 <a className="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i className="fas fa-bell fa-fw"></i>
-                                    {/*  <!-- Counter - Alerts --> */}
+                                  
                                     <span className="badge badge-danger badge-counter">3+</span>
                                 </a>
-                                {/*   <!-- Dropdown - Alerts --> */}
+                              
                                 <div className="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                     aria-labelledby="alertsDropdown">
                                     <h6 className="dropdown-header">
@@ -111,17 +114,17 @@ const Navbar = () => {
                                     </a>
                                     <a className="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                                 </div>
-                            </li>
+                            </li> */}
 
                             {/*  <!-- Nav Item - Messages --> */}
-                            <li className="nav-item dropdown no-arrow mx-1">
+                            {/* <li className="nav-item dropdown no-arrow mx-1">
                                 <a className="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i className="fas fa-envelope fa-fw"></i>
-                                    {/*  <!-- Counter - Messages --> */}
+                                
                                     <span className="badge badge-danger badge-counter">7</span>
                                 </a>
-                                {/*   <!-- Dropdown - Messages --> */}
+                               
                                 <div className="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                     aria-labelledby="messagesDropdown">
                                     <h6 className="dropdown-header">
@@ -177,7 +180,7 @@ const Navbar = () => {
                                     </a>
                                     <a className="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                                 </div>
-                            </li>
+                            </li> */}
 
                             <div className="topbar-divider d-none d-sm-block"></div>
 
@@ -185,9 +188,10 @@ const Navbar = () => {
                             <li className="nav-item dropdown no-arrow">
                                 <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span className="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                    <img className="img-profile rounded-circle"
-                                        src="img/undraw_profile.svg" />
+                                    <span className="mr-2 d-none d-lg-inline text-gray-600 small">{username}</span>
+                                    {/* <img className="img-profile rounded-circle"
+                                        src="img/undraw_profile.svg" /> */}
+                                        <i className='fas fa-user-circle'></i>
                                 </a>
                                 {/*  <!-- Dropdown - User Information --> */}
                                 <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -196,14 +200,14 @@ const Navbar = () => {
                                         <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Profile
                                     </a>
-                                    <a className="dropdown-item" href="#">
+                                    {/* <a className="dropdown-item" href="#">
                                         <i className="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Settings
                                     </a>
                                     <a className="dropdown-item" href="#">
                                         <i className="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Activity Log
-                                    </a>
+                                    </a> */}
                                     <div className="dropdown-divider"></div>
                                     {/* <a className="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                         <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

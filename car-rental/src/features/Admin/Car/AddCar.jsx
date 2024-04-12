@@ -1,29 +1,55 @@
 import React, { useEffect, useState } from 'react'
 import useFetchCollection from '../../../customhook/useFetchCollection'
-import { ref, uploadBytesResumable , getDownloadURL} from 'firebase/storage'
+import { ref, uploadBytesResumable , getDownloadURL, deleteObject} from 'firebase/storage'
 import { db, storage } from '../../../firebase/config'
 import {toast} from 'react-toastify'
-import { Timestamp, addDoc, collection } from 'firebase/firestore'
-import {useNavigate} from 'react-router-dom'
+import { Timestamp, addDoc, collection, doc, setDoc } from 'firebase/firestore'
+import {Link, useNavigate, useParams} from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { selectcars } from '../../../redux/carSlice'
+let initialState={brand:'',model:'',power:'',engine:'',images:[],gearbox:'',body:'',fuel:'',count:'',locations:[],pricewf:'',pricewof:''}
 const AddCar = () => {
   const navigate=useNavigate()
   let Body=["Sedan","SUV","Truck","Van","Sports"]
-  let [car,setCar]=useState({brand:'',model:'',power:'',engine:'',images:[],gearbox:'',body:'',fuel:'',count:'',locations:[],pricewf:'',pricewof:''})
+  let [car,setCar]=useState({...initialState})
   let [uploadProgress,setUploadProgress]=useState(0)
-
   const {data:brands}=useFetchCollection("brands")
   const {data:models}=useFetchCollection("models")
 
   let [selectBrand,setSelectBrand]=useState('')
   let [allModels,setAllModels]=useState([])
   let [selectModel,setSelectModel]=useState('')
+
   useEffect(()=>{
     if(selectBrand !=''){
       let filterModels=models.filter(item=>item.brand==selectBrand)
       setAllModels(filterModels)
-      setCar({...car,brand:selectBrand})
+      // setCar({...car,brand:selectBrand})
     }
   },[selectBrand])
+
+//edit - 
+const {id}=useParams()
+const allCars=useSelector(selectcars)
+const [oldImages,setOldImages]=useState([])
+const [newImages,setNewImages]=useState([])
+useEffect(()=>{
+  if(id){
+    let cardata=allCars.find(item=>item.id==id)
+    setCar(cardata)
+    setSelectBrand(cardata.brand)
+    setSelectModel(cardata.model)
+    setOldImages(cardata.images)
+  }
+  else setCar({...initialState})
+},[id])
+let removeImage=(index,image)=>{
+  const updatedImages=[...oldImages]
+  updatedImages.splice(index,1)
+  setOldImages(updatedImages)
+  deleteObject(ref(storage,image))
+}
+  
  
   
 //   let handleImages=(e)=>{
@@ -60,6 +86,7 @@ let handleImages=(e)=>{
     () => {
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
        arr.push(downloadURL)
+       setNewImages(prevImages=>[...prevImages,downloadURL])
       });
     }
 );
@@ -69,35 +96,58 @@ let handleImages=(e)=>{
 
   let handleSubmit=async(e)=>{
     e.preventDefault()
+    if(!id){
     try{
       const docRef=collection(db,"cars")
-      await addDoc(docRef,{...car,createdAt:Timestamp.now().toMillis()})
+      await addDoc(docRef,{...car,
+         brand:selectBrand,model:selectModel,createdAt:Timestamp.now().toMillis()})
       toast.success("car added")
       navigate('/admin/viewcar')
     }
     catch(error){toast.error(error.message)}
+  } 
+else {
+    const updatedImages=[...oldImages,...newImages]
+    try{
+        const docRef=doc(db,"cars",id)
+        await setDoc(docRef,{...car,
+          images:updatedImages,createdAt:car.createdAt,editedAt:Timestamp.now().toMillis()})
+        toast.success('Car updated')
+        navigate('/admin/viewcar')
+    }
+    catch(error){
+        toast.error(error.message)
+    }
   }
+}
   return (
     <div className='container mt-5'>
         <div className="card">
           <div className="card-header">
-            <h1>Add Car</h1>
+            <h1>{id?"Edit ":"Add "} Car
+
+            <Link  type="button" class="btn btn-primary float-end" to='/admin/viewcar' >
+                View Car
+            </Link>
+            </h1>
           </div>
           <div className="card-body">
             <form onSubmit={handleSubmit}>
               <div class="mb-3">
                 <label for="" class="form-label">Brand</label>
-<select class="form-select" value={selectBrand} onChange={(e)=>setSelectBrand(e.target.value)}>
+<select class="form-select" value={selectBrand} onChange={(e)=>setSelectBrand(e.target.value)}
+onBlur={(e)=>setSelectBrand(e.target.value)}>
  <option value='' disabled>Select one</option>
   {brands.map((brand,i)=>
  <option key={i}>{brand.name}</option>)}
  </select>  </div>
     <div class="mb-3">
     <label for="" class="form-label">Model</label>
-       <select class="form-select" name="model" value={selectModel} onChange={(e)=>{
-        setSelectModel(e.target.value);setCar({...car,model:e.target.value})
-        }}>
-        <option value='' disabled>Select one</option>
+       <select class="form-select" value={selectModel} onChange={(e)=>{
+        setSelectModel(e.target.value);
+        // setCar({...car,model:e.target.value})
+        }} onBlur={(e)=>setSelectModel(e.target.value)}>
+        <option value=''>Select one</option>
          {allModels.map((model,i)=>
        <option key={i}>{model.name}</option>)}</select>
               </div>
@@ -122,6 +172,12 @@ let handleImages=(e)=>{
                 <label for="" class="form-label">Images</label>
                 <input type="file" class="form-control" name="images" multiple onChange={handleImages}/>
               </div>
+              {id && <>
+                  {oldImages.map((img,i)=><>
+                    <img src={img} width={50} height={50} />
+                <span className='me-2' style={{position:'relative',top:'-20px',cursor:'pointer'}}onClick={()=>removeImage(i,img)}>X</span>
+                  </>)}
+              </>}
               <div className="row">
                 <div class="mb-3 col-4">
                   <label for="" class="form-label">GearBox</label>
@@ -178,7 +234,7 @@ let handleImages=(e)=>{
               </div>
               <div class="d-grid gap-2">
               <button type="submit" class="btn btn-primary" >
-                Submit
+                {id? "Update ": "Submit"}
               </button>
               </div>
               

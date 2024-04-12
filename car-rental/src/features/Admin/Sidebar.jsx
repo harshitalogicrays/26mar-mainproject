@@ -19,9 +19,9 @@ const Sidebar = () => {
                 {/*  <!-- Sidebar - Brand --> */}
                 <a className="sidebar-brand d-flex align-items-center justify-content-center" href="#">
                     <div className="sidebar-brand-icon rotate-n-15">
-                        <i className="fas fa-laugh-wink"></i>
+                        <i className="fas fa-car"></i>
                     </div>
-                    <div className="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                    <div className="sidebar-brand-text mx-3">Car Rental</div>
                     <div className="text-center d-none d-md-inline">
                     <button className="rounded-circle border-0" id="sidebarToggle" onClick={changeStyle}></button>
                 </div>
@@ -77,20 +77,20 @@ const Sidebar = () => {
 
             {/* <!-- Nav Item - Charts --> */}
             <li className="nav-item">
-                                <Link className="nav-link" to='/admin/addcar'>
+                                <Link className="nav-link" to='/admin/viewcar'>
                                     <i className="fas fa-fw fa-chart-area"></i>
-                                    <span>Add Car</span></Link>
+                                    <span>View Cars</span></Link>
                             </li>
                 {/*  <!-- Divider --> */}
-                <hr className="sidebar-divider" />
+                {/* <hr className="sidebar-divider" /> */}
 
                 {/* <!-- Heading --> */}
-                <div className="sidebar-heading">
+                {/* <div className="sidebar-heading">
                     Addons
-                </div>
+                </div> */}
 
                 {/*  <!-- Nav Item - Pages Collapse Menu --> */}
-                <li className="nav-item">
+                {/* <li className="nav-item">
                     <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                         aria-expanded="true" aria-controls="collapsePages">
                         <i className="fas fa-fw fa-folder"></i>
@@ -108,14 +108,14 @@ const Sidebar = () => {
                             <a className="collapse-item" href="blank.html">Blank Page</a>
                         </div>
                     </div>
-                </li>
+                </li> */}
 
               
                 {/*  <!-- Nav Item - Tables --> */}
                 <li className="nav-item">
                     <a className="nav-link" href="tables.html">
                         <i className="fas fa-fw fa-table"></i>
-                        <span>Tables</span></a>
+                        <span>Rentals</span></a>
                 </li>
 
                 {/* <!-- Divider --> */}
@@ -127,11 +127,11 @@ const Sidebar = () => {
                 </div> */}
 
                 {/*  <!-- Sidebar Message --> */}
-                <div className="sidebar-card d-none d-lg-flex">
+                {/* <div className="sidebar-card d-none d-lg-flex">
                     <img className="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="..." />
                     <p className="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
                     <a className="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
-                </div>
+                </div> */}
 
             </ul>
   )

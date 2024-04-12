@@ -38,7 +38,8 @@ const router = createBrowserRouter([
           {path:'viewmodel',element:<ViewModel/>},
           {path:'editmodel/:id',element:<AddModel/>},
           {path:'addcar',element:<AddCar/>},
-          {path:'viewcar',element:<ViewCar/>}
+          {path:'viewcar',element:<ViewCar/>},
+          {path:'editcar/:id',element:<AddCar/>},
       ]},
 
         {path:'*',element:<PageNotFound/>}
