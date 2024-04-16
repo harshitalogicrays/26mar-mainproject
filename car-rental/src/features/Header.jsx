@@ -5,7 +5,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import logoImg from '/src/assets/download.png'
-import { FaAddressBook, FaArrowAltCircleLeft, FaCar, FaCarSide, FaHome, FaListAlt, FaLock, FaPenAlt, FaSearch, FaShoppingCart } from "react-icons/fa";
+import { FaAddressBook, FaArrowAltCircleLeft, FaCar, FaCarAlt, FaCarSide, FaHome, FaInfo, FaInfoCircle, FaListAlt, FaLock, FaPenAlt, FaSearch, FaServicestack, FaShoppingCart, FaWrench } from "react-icons/fa";
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase/config';
@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginuser, logoutuser, selectUserName, selectUserRole } from '../redux/authSlice';
 import { doc, getDoc } from 'firebase/firestore';
 import { Logout, ShowOnLogIn, ShowOnLogout } from './hiddenlinks';
+import './Header.css'
 const Header = () => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
@@ -40,7 +41,7 @@ const Header = () => {
   const userrole=useSelector(selectUserRole)
   return (
    <>
-     <Navbar expand="lg" bg="light" data-bs-theme="dark">
+     <Navbar expand="lg" bg="primary" data-bs-theme="light">
       <Container fluid>
         <Navbar.Brand href="">
             <Image src={logoImg} height={40} width={40} />
@@ -48,22 +49,41 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link as={NavLink} to='/' 
+            <Nav.Link to='/' as={NavLink}  
              style={({ isActive}) => {
                 return {
                 fontWeight: isActive ? "bold" : "",
-                color: isActive ? "red" : "white"
+                color: isActive ? "white" : ""
                 };
             }}><FaHome/> Home</Nav.Link>
-            <Nav.Link as={Link} to='/about'>About</Nav.Link>
-            <NavDropdown title="Cars" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1"><FaCar/> Manual</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.2">
-                <FaCarSide/>Automatic
-              </NavDropdown.Item>
-            </NavDropdown>
-            <Nav.Link as={Link} to='/contact'><FaAddressBook/> contact us</Nav.Link>
+            <Nav.Link as={NavLink}  
+             style={({ isActive}) => {
+                return {
+                fontWeight: isActive ? "bold" : "",
+                color: isActive ? "white" : ""
+                };
+            }} to='/about'><FaInfoCircle/> About</Nav.Link>
+                       <Nav.Link as={NavLink}  
+             style={({ isActive}) => {
+                return {
+                fontWeight: isActive ? "bold" : "",
+                color: isActive ? "white" : ""
+                };
+            }} to='/services'><FaServicestack/> Services</Nav.Link>
+              <Nav.Link as={NavLink}  
+             style={({ isActive}) => {
+                return {
+                fontWeight: isActive ? "bold" : "",
+                color: isActive ? "white" : ""
+                };
+            }} to='/cars'><FaCarSide/> Cars</Nav.Link>
+            <Nav.Link as={NavLink}  
+             style={({ isActive}) => {
+                return {
+                fontWeight: isActive ? "bold" : "",
+                color: isActive ? "white" : ""
+                };
+            }} to='/contact'><FaAddressBook/> contact us</Nav.Link>
           </Nav>
             {userrole=="0"  &&
           <Nav  className="me-auto">
@@ -74,10 +94,12 @@ const Header = () => {
           </Nav>
 }
           <Form>
-            <InputGroup>
-            <Form.Control type="text" placeholder="Search" className=" mr-sm-2" />            
-            <Button type="submit" variant='danger'><FaSearch/></Button>
-            </InputGroup>
+          <div className="search__box">
+                <input type="text" placeholder="Search" />
+                <span>
+                  <FaSearch/>
+                </span>
+              </div>
       </Form> 
           <Nav>
           <Nav.Link as={Link} to='/'><FaShoppingCart size={30}/>
@@ -90,7 +112,13 @@ const Header = () => {
             </ShowOnLogout>
             <ShowOnLogIn>
                 <Nav.Link >Welcome {username ? <>{username}</>:"Guest"} </Nav.Link>
-                <Nav.Link as={Link} to='/'><FaListAlt/> My Orders</Nav.Link>
+                <Nav.Link as={NavLink}  
+                        style={({ isActive}) => {
+                            return {
+                            fontWeight: isActive ? "bold" : "",
+                            color: isActive ? "white" : ""
+                            };
+                        }} to='/'><FaListAlt/> My Orders</Nav.Link>
                 <Nav.Link ><Logout/></Nav.Link>
             </ShowOnLogIn>
           </Nav>

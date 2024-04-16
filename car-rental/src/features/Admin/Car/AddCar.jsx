@@ -24,7 +24,6 @@ const AddCar = () => {
     if(selectBrand !=''){
       let filterModels=models.filter(item=>item.brand==selectBrand)
       setAllModels(filterModels)
-      // setCar({...car,brand:selectBrand})
     }
   },[selectBrand])
 
@@ -33,43 +32,29 @@ const {id}=useParams()
 const allCars=useSelector(selectcars)
 const [oldImages,setOldImages]=useState([])
 const [newImages,setNewImages]=useState([])
+const [edit,setEdit]=useState(false)
 useEffect(()=>{
   if(id){
     let cardata=allCars.find(item=>item.id==id)
     setCar(cardata)
+    setEdit(true)
     setSelectBrand(cardata.brand)
     setSelectModel(cardata.model)
     setOldImages(cardata.images)
   }
-  else setCar({...initialState})
+  else {
+    setCar({...initialState})
+    setSelectBrand('')
+    setSelectModel('')
+  }
 },[id])
+
 let removeImage=(index,image)=>{
   const updatedImages=[...oldImages]
   updatedImages.splice(index,1)
   setOldImages(updatedImages)
   deleteObject(ref(storage,image))
 }
-  
- 
-  
-//   let handleImages=(e)=>{
-//     let file=e.target.files[0]
-//    let storageRef = ref(storage,`car-rental/cars/${Date.now()}`)
-//    const uploadTask = uploadBytesResumable(storageRef, file);
-//    uploadTask.on('state_changed',(snapshot) => {
-//     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-//       setUploadProgress(progress)
-      
-//   }, 
-//   (error) => {toast.error(error.message)  }, 
-//   () => {
-//     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-//       console.log('File available at', downloadURL);
-//     });
-//   }
-// );
-//   }
-
 
 let handleImages=(e)=>{
   let allImages=e.target.files
@@ -111,7 +96,9 @@ else {
     try{
         const docRef=doc(db,"cars",id)
         await setDoc(docRef,{...car,
-          images:updatedImages,createdAt:car.createdAt,editedAt:Timestamp.now().toMillis()})
+          images:updatedImages,
+          brand:selectBrand,model:selectModel,
+          createdAt:car.createdAt,editedAt:Timestamp.now().toMillis()})
         toast.success('Car updated')
         navigate('/admin/viewcar')
     }
@@ -135,21 +122,27 @@ else {
             <form onSubmit={handleSubmit}>
               <div class="mb-3">
                 <label for="" class="form-label">Brand</label>
-<select class="form-select" value={selectBrand} onChange={(e)=>setSelectBrand(e.target.value)}
-onBlur={(e)=>setSelectBrand(e.target.value)}>
+    <select class="form-select" value={selectBrand} onChange={(e)=>{setSelectBrand(e.target.value);setEdit(false)
+    }}
+    >
  <option value='' disabled>Select one</option>
   {brands.map((brand,i)=>
  <option key={i}>{brand.name}</option>)}
  </select>  </div>
     <div class="mb-3">
     <label for="" class="form-label">Model</label>
-       <select class="form-select" value={selectModel} onChange={(e)=>{
-        setSelectModel(e.target.value);
-        // setCar({...car,model:e.target.value})
-        }} onBlur={(e)=>setSelectModel(e.target.value)}>
-        <option value=''>Select one</option>
+       <select class="form-select" value={selectModel}  onChange={(e)=>{
+        setSelectModel(e.target.value)}}>       
+        {(id && edit) ? <option>{selectModel}</option>
+        :
+        <>
+         <option value='' disabled>Select one</option>
          {allModels.map((model,i)=>
-       <option key={i}>{model.name}</option>)}</select>
+       <option key={i}>{model.name}</option>)}
+        </>        
+      }     
+     
+       </select>
               </div>
               <div className="row">
                   <div class="mb-3 col">

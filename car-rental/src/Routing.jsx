@@ -16,6 +16,8 @@ import ViewBrand from "./features/Admin/ViewBrand";
 import AddModel from "./features/Admin/AddModel";
 import ViewModel from "./features/Admin/ViewModel";
 import ViewCar from "./features/Admin/Car/ViewCar";
+import Services from "./features/Services";
+import CarDetails from "./features/CarDetails";
 
 const router = createBrowserRouter([
     {
@@ -23,11 +25,13 @@ const router = createBrowserRouter([
       element: <App />,
       children: [
         {path: "", element:<UserLayout> <Home /> </UserLayout>},
-        { path:"about", element:<UserLayout> <About/></UserLayout>},
-        {path:'contact', element:<Contactus/>},
-        {path:"cars",element:<Cars/>},
+        {path:"about", element:<UserLayout> <About/></UserLayout>},
+        {path:'contact', element:<UserLayout><Contactus/></UserLayout>},
+        {path:"cars",element:<UserLayout><Cars/></UserLayout>},
+        {path:"services",element:<UserLayout><Services/></UserLayout>},
         {path:"login" , element:<Login/>},
         {path:"register",element:<Register/>},
+        {path:"car-details/:id",element:<UserLayout><CarDetails/></UserLayout>},
         {path:'admin' , element:<AdminLayout/>,
       children:[
           {path:'',element:<Dashboard/>},

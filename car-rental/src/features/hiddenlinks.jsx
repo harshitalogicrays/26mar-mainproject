@@ -8,13 +8,13 @@ import { FaArrowAltCircleLeft } from "react-icons/fa"
 import { signOut } from "firebase/auth"
 import { auth } from "../firebase/config"
 import {toast} from 'react-toastify'
+import UFooter from "./UFooter"
 
 export const UserLayout=({children})=>{
     return (<>
             <Header/>
-            <Container>
                   {children}
-            </Container>
+            <UFooter/>
         </>)
 }
 

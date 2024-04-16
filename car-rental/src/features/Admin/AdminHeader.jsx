@@ -10,7 +10,6 @@ import "../../assets/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"
 import "../../assets/admin/vendor/jquery-easing/jquery.easing.min.js"
 import "../../assets/admin/js/sb-admin-2.min.js"
 import {Outlet} from 'react-router-dom'
-import { Logout } from '../hiddenlinks.jsx';
 
 const AdminHeader = () => {
   return (

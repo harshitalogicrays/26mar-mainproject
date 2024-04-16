@@ -1,10 +1,18 @@
 import React from 'react'
-import Loader from './Loader'
+import MySlider from './MySlider'
+import About from './About'
+import Services from './Services'
+import FindCarForm from './FindCarForm'
+import Cars from './Cars'
 
 const Home = () => {
   return (
    <>
-    <h1>Home page</h1>
+    <MySlider/>
+    <FindCarForm/>
+    <About/>
+    <Services/>
+    <Cars/>
    </>
   )
 }
