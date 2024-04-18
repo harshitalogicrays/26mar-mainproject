@@ -53,8 +53,8 @@ const Services = () => {
         <h1 className='text-center'>Our Services</h1>
         <hr/>
        <Row>
-      {serviceData.map((item) => (
-       <Col lg="4" md="4" sm="6" className="mb-3">
+      {serviceData.map((item,i) => (
+       <Col  key={i} lg="4" md="4" sm="6" className="mb-3">
         <Card>
             <Card.Body>
                <span className='mb-5 text-warning fs-2 p-1'>{item.icon}</span>

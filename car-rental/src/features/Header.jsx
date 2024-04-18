@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Form, Image, InputGroup } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -15,6 +15,8 @@ import { loginuser, logoutuser, selectUserName, selectUserRole } from '../redux/
 import { doc, getDoc } from 'firebase/firestore';
 import { Logout, ShowOnLogIn, ShowOnLogout } from './hiddenlinks';
 import './Header.css'
+import useFetchCollection from '../customhook/useFetchCollection';
+import { FILTER_BY_SEARCH } from '../redux/filterSlice';
 const Header = () => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
@@ -39,6 +41,15 @@ const Header = () => {
 
   const username=useSelector(selectUserName)
   const userrole=useSelector(selectUserRole)
+
+  let [search,setSearch]=useState('')
+  const {data:cars}=useFetchCollection("cars")
+
+  useEffect(()=>{
+    dispatch(FILTER_BY_SEARCH({cars,search}))
+    navigate('/cars')
+  },[search])
+ 
   return (
    <>
      <Navbar expand="lg" bg="primary" data-bs-theme="light">
@@ -95,7 +106,7 @@ const Header = () => {
 }
           <Form>
           <div className="search__box">
-                <input type="text" placeholder="Search" />
+                <input type="text" placeholder="Search"  value={search} onChange={(e)=>setSearch(e.target.value)}/>
                 <span>
                   <FaSearch/>
                 </span>
