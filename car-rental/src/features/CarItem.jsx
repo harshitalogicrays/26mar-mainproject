@@ -1,8 +1,14 @@
 import React from 'react'
 import { Button, ButtonGroup, Card, Col, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import cssmodule from './CarItem.module.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { ADD_TO_RENT } from '../redux/rentSlice'
 const CarItem = ({car}) => {
+ const dispatch=useDispatch()
+  let handleRent=()=>{
+    dispatch(ADD_TO_RENT(car))
+  }
   return (
     <Col xs={4} className='mb-3'>
          <Card className={cssmodule.card}>
@@ -20,7 +26,7 @@ const CarItem = ({car}) => {
         </Card.Text>
         <div class="d-grid gap-2">
         <ButtonGroup aria-label="Basic example">
-            <Button variant="primary">Rent</Button>
+            <Button variant="primary" onClick={handleRent}>Rent</Button>
             <Button as={Link} to={`/car-details/${car.id}`} variant="warning">Details</Button>
         </ButtonGroup>
         </div>          

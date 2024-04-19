@@ -18,6 +18,7 @@ import ViewModel from "./features/Admin/ViewModel";
 import ViewCar from "./features/Admin/Car/ViewCar";
 import Services from "./features/Services";
 import CarDetails from "./features/CarDetails";
+import Rent from "./features/Rent";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
         {path:"login" , element:<Login/>},
         {path:"register",element:<Register/>},
         {path:"car-details/:id",element:<UserLayout><CarDetails/></UserLayout>},
+        {path:"rent",element:<Rent/>},
         {path:'admin' , element:<AdminLayout/>,
       children:[
           {path:'',element:<Dashboard/>},

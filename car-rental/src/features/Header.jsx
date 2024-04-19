@@ -17,6 +17,7 @@ import { Logout, ShowOnLogIn, ShowOnLogout } from './hiddenlinks';
 import './Header.css'
 import useFetchCollection from '../customhook/useFetchCollection';
 import { FILTER_BY_SEARCH } from '../redux/filterSlice';
+import { selectAddToRent } from '../redux/rentSlice';
 const Header = () => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
@@ -46,10 +47,15 @@ const Header = () => {
   const {data:cars}=useFetchCollection("cars")
 
   useEffect(()=>{
-    dispatch(FILTER_BY_SEARCH({cars,search}))
-    navigate('/cars')
+    if(search !=''){
+      dispatch(FILTER_BY_SEARCH({cars,search}))
+      navigate('/cars')
+    }
   },[search])
  
+
+  const rented=useSelector(selectAddToRent)
+  console.log(rented)
   return (
    <>
      <Navbar expand="lg" bg="primary" data-bs-theme="light">
@@ -113,8 +119,10 @@ const Header = () => {
               </div>
       </Form> 
           <Nav>
-          <Nav.Link as={Link} to='/'><FaShoppingCart size={30}/>
-            <span class="badge rounded-pill text-bg-danger">0</span >
+          <Nav.Link as={Link} to='/rent'><FaShoppingCart size={30}/>
+          {Object.keys(rented).length!=0 &&
+            <span class="badge rounded-pill text-bg-danger">
+             Added</span >}
             
           </Nav.Link>
             <ShowOnLogout>

@@ -7,8 +7,23 @@ import { Timestamp, addDoc, collection, doc, setDoc } from 'firebase/firestore'
 import {Link, useNavigate, useParams} from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectcars } from '../../../redux/carSlice'
+import {locations} from '../../locations.js'
+
+
 let initialState={brand:'',model:'',power:'',engine:'',images:[],gearbox:'',body:'',fuel:'',count:'',locations:[],pricewf:'',pricewof:''}
 const AddCar = () => {
+  const handleSelectChange = (e) => {
+    const options = e.target.options;
+    // console.log(options)
+    const selected = [];
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].selected) {
+        selected.push(options[i].value);
+      }
+    }
+    setCar({...car,locations:selected})
+  };
+
   const navigate=useNavigate()
   let Body=["Sedan","SUV","Truck","Van","Sports"]
   let [car,setCar]=useState({...initialState})
@@ -209,8 +224,9 @@ else {
                   </div>
                   <div class="mb-3 col">
                     <label for="" class="form-label">Available Locations</label>
-                    <input  type="text" name="locations" class="form-control" value={car.locations}
-                    onChange={(e)=>setCar({...car,locations:e.target.value})} />
+                      <select className='form-select' multiple onChange={handleSelectChange}>
+                      {locations.map((loc,i)=><option key={i}>{loc}</option>)}
+                    </select>
                   </div>
               </div>
               <div className="row">
