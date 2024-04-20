@@ -19,6 +19,8 @@ import ViewCar from "./features/Admin/Car/ViewCar";
 import Services from "./features/Services";
 import CarDetails from "./features/CarDetails";
 import Rent from "./features/Rent";
+import FilterCars from "./features/FilterCars";
+import BookingDetails from "./features/BookingDetails";
 
 const router = createBrowserRouter([
     {
@@ -34,6 +36,8 @@ const router = createBrowserRouter([
         {path:"register",element:<Register/>},
         {path:"car-details/:id",element:<UserLayout><CarDetails/></UserLayout>},
         {path:"rent",element:<Rent/>},
+        {path:"filtercars",element:<UserLayout><FilterCars/></UserLayout>},
+        {path:"booking",element:<UserLayout><BookingDetails/></UserLayout>},
         {path:'admin' , element:<AdminLayout/>,
       children:[
           {path:'',element:<Dashboard/>},

@@ -8,6 +8,7 @@ const CarItem = ({car}) => {
  const dispatch=useDispatch()
   let handleRent=()=>{
     dispatch(ADD_TO_RENT(car))
+    window.scrollTo(0,0)
   }
   return (
     <Col xs={4} className='mb-3'>

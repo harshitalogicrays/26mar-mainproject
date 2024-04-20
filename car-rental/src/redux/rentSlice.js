@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const rentSlice=createSlice({
     name:'rent',
-    initialState:{rentcar:{},url:''},
+    initialState:{rentcar:{},urls:''},
     reducers:{
         ADD_TO_RENT(state,action){
             if(state.rentcar.id != action.payload.id){
@@ -13,11 +13,11 @@ const rentSlice=createSlice({
             }
          },
         SAVE_URL(state,action){
-            state.url=action.payload
+            state.urls=action.payload
         }
     }
 })
 export const {ADD_TO_RENT,SAVE_URL}=rentSlice.actions
 export default rentSlice.reducer
 export const selectAddToRent=state=>state.rent.rentcar
-export const selectURL=state=>state.rent.url
+export const selectURL=state=>state.rent.urls

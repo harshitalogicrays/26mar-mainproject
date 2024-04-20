@@ -8,12 +8,27 @@ import { auth, db } from '../firebase/config'
 import { toast } from 'react-toastify'
 import { Timestamp, doc, getDoc, setDoc } from 'firebase/firestore'
 import Loader from './Loader'
+import { useSelector } from 'react-redux'
+import { selectURL } from '../redux/rentSlice'
 
 const Login = () => {
   const redirect=useNavigate()
   let initialState={email:'',password:''}
   let [user,setUser]=useState({...initialState}) //state object
   let [isLoading,setIsLoading]=useState(false)
+
+  let previousURL=useSelector(selectURL)
+  let redirectURL=()=>{
+    if(previousURL.includes('rent')){
+      redirect('/rent')
+    }
+    else {
+      redirect('/')
+    }
+}
+
+
+
   let handleSubmit=(e)=>{
     e.preventDefault()
     setIsLoading(true)
@@ -32,7 +47,8 @@ const Login = () => {
           }
           else if(role=="1"){
             toast.success('loggedIn Successfully')
-            redirect('/')
+            // redirect('/')
+            redirectURL()
           }
         }
         setIsLoading(false)
@@ -48,6 +64,7 @@ const Login = () => {
      toast.error(error.message)
     });
     }
+  
     const provider = new GoogleAuthProvider();
     let loginWithGoogle=()=>{
       signInWithPopup(auth, provider)
@@ -58,7 +75,8 @@ const Login = () => {
             const docRef=doc(db,"users",user.uid)
              await setDoc(docRef,obj)
              toast.success('loggedIn Successfully')
-              redirect('/')
+              // redirect('/')
+              redirectURL()
           }
           catch(error){
             toast.error(error.message)
