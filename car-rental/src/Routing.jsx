@@ -21,6 +21,9 @@ import CarDetails from "./features/CarDetails";
 import Rent from "./features/Rent";
 import FilterCars from "./features/FilterCars";
 import BookingDetails from "./features/BookingDetails";
+import BookingPayment from "./features/BookingPayment";
+import Thankyou from "./features/Thankyou";
+import Rentals from "./features/Admin/Rentals";
 
 const router = createBrowserRouter([
     {
@@ -38,6 +41,8 @@ const router = createBrowserRouter([
         {path:"rent",element:<Rent/>},
         {path:"filtercars",element:<UserLayout><FilterCars/></UserLayout>},
         {path:"booking",element:<UserLayout><BookingDetails/></UserLayout>},
+        {path:"bookingpayment",element:<UserLayout><BookingPayment/></UserLayout>},
+        {path:'thankyou',element:<Thankyou/>},
         {path:'admin' , element:<AdminLayout/>,
       children:[
           {path:'',element:<Dashboard/>},
@@ -50,6 +55,7 @@ const router = createBrowserRouter([
           {path:'addcar',element:<AddCar/>},
           {path:'viewcar',element:<ViewCar/>},
           {path:'editcar/:id',element:<AddCar/>},
+          {path:'rentals',element:<Rentals/>}
       ]},
 
         {path:'*',element:<PageNotFound/>}

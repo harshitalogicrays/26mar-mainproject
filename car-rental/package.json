@@ -13,6 +13,8 @@
   "dependencies": {
     "@blacklab/react-image-magnify": "^4.1.1",
     "@reduxjs/toolkit": "^2.2.3",
+    "@stripe/react-stripe-js": "^2.7.0",
+    "@stripe/stripe-js": "^3.3.0",
     "bootstrap": "^5.3.3",
     "firebase": "^10.10.0",
     "react": "^18.2.0",

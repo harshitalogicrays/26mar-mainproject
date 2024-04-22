@@ -8,12 +8,19 @@ import { FaCarSide } from 'react-icons/fa'
 import { TbEngine, TbManualGearbox } from 'react-icons/tb'
 import { PiEngineFill } from 'react-icons/pi'
 import { BsCarFront, BsFillFuelPumpFill } from 'react-icons/bs'
+import { ADD_TO_RENT, selectAddToRent } from '../redux/rentSlice'
 
 const CarDetails = () => {
     const {id}=useParams()
     const dispatch=useDispatch()
     const allcars=useSelector(selectcars)
     const car=allcars.find(item=>item.id==id)
+    let handleRent=()=>{
+      dispatch(ADD_TO_RENT(car))
+      window.scrollTo(0,0)
+    }
+
+    const rented=useSelector(selectAddToRent)
   return (
     <Container className='bg-light mt-5 shadow  p-3'>
         <Row>
@@ -54,7 +61,11 @@ const CarDetails = () => {
                                             Available Stock: {car.count}
                                         </span>
                                     </div>
+                                    {rented.id!=car.id &&
+                                    <Button variant="primary btn-lg" onClick={handleRent}>Rent Now</Button>
+}
                                 </Col>
+                               
         </Row>
    </Container>
   )

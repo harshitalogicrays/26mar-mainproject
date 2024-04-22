@@ -14,10 +14,13 @@ const rentSlice=createSlice({
          },
         SAVE_URL(state,action){
             state.urls=action.payload
+        },
+        EMPTY_CART(state,action){
+            state.rentcar={}
         }
     }
 })
-export const {ADD_TO_RENT,SAVE_URL}=rentSlice.actions
+export const {ADD_TO_RENT,SAVE_URL,EMPTY_CART}=rentSlice.actions
 export default rentSlice.reducer
 export const selectAddToRent=state=>state.rent.rentcar
 export const selectURL=state=>state.rent.urls

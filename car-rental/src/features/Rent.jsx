@@ -39,6 +39,9 @@ const Rent = () => {
 
   useEffect(()=>{
     dispatch(TOTAL_DAYS({details}))
+  },[])
+  useEffect(()=>{
+    dispatch(TOTAL_DAYS({details}))
   },[details.sdate,details.edate])
 
 useEffect(()=>{

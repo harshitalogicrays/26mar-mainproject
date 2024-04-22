@@ -25,6 +25,8 @@ const findCarSlice=createSlice({
             (1000 * 60 * 60 * 24))
             state.totalDays=days
           }
+          else 
+          state.totalDays=0
         },
         TOTAL_PRICE(state,action){
           state.totalPrice=action.payload
