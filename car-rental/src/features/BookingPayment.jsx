@@ -11,7 +11,7 @@ const BookingPayment = () => {
     const [clientSecret, setClientSecret] = useState("");
     const amount=useSelector(selectTotalPrice)
     useEffect(() => {
-        fetch("http://localhost:1000/create-payment-intent", {
+        fetch("https://server-nu-ten.vercel.app/create-payment-intent", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ amount:amount}),
