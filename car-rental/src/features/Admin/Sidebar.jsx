@@ -32,20 +32,17 @@ const Sidebar = () => {
 
                 {/*  <!-- Nav Item - Dashboard --> */}
                 <li className="nav-item active">
-                    <a className="nav-link" href="index.html">
-                        <i className="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Dashboard</span></a>
+                <Link className="nav-link" to='/admin'>
+                <i className="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span></Link>
+                     
+                       
                 </li>
 
                 {/*  <!-- Divider --> */}
                 <hr className="sidebar-divider" />
 
-                {/*   <!-- Heading --> */}
-                <div className="sidebar-heading">
-                    Interface
-                </div>
-
-                {/*  <!-- Nav Item - Pages Collapse Menu --> */}
+                            {/*  <!-- Nav Item - Pages Collapse Menu --> */}
                 <li className="nav-item">
                     <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                         aria-expanded="true" aria-controls="collapseTwo">

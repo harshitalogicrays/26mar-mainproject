@@ -3,12 +3,12 @@ import {getAuth} from 'firebase/auth'
 import {getFirestore} from 'firebase/firestore'
 import {getStorage} from 'firebase/storage'
 const firebaseConfig = {
-  apiKey: "AIzaSyDhyzo1NMYZwuJCAWOd7FLgvUXs47zll9w",
-  authDomain: "car-rental-682d4.firebaseapp.com",
-  projectId: "car-rental-682d4",
-  storageBucket: "car-rental-682d4.appspot.com",
-  messagingSenderId: "716207643090",
-  appId: "1:716207643090:web:37773aa84ab01b52dbd00b"
+  apiKey: import.meta.env.VITE_APIKEY,
+  authDomain: import.meta.env.VITE_AUTHDOMAIN,
+  projectId: import.meta.env.VITE_PROJECTID,
+  storageBucket: import.meta.env.VITE_STROAGEBUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGINGSENDERID,
+  appId: import.meta.env.VITE_APPID
 };
 
 const app = initializeApp(firebaseConfig);

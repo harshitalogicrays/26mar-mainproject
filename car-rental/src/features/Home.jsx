@@ -6,7 +6,7 @@ import FindCarForm from './FindCarForm'
 import Cars from './Cars'
 
 const Home = () => {
- 
+  // console.log(import.meta.env.VITE_APIKEY)
   return (
    <>
    

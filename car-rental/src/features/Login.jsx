@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Col, Container, Form, Image, Row } from 'react-bootstrap'
 import { FaLock, FaPenSquare } from 'react-icons/fa'
-import RegisterImg from '/src/assets/register.png'
+import LoginImg from '/src/assets/login.png'
 import { Link, useNavigate } from 'react-router-dom'
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
 import { auth, db } from '../firebase/config'
@@ -92,7 +92,7 @@ const Login = () => {
         <h1><FaLock/> Login Here</h1>
         <hr/>
             <Row>
-              <Col xs={6}><Image src={RegisterImg} fluid/> </Col>
+              <Col xs={6}><Image src={LoginImg} fluid/> </Col>
               <Col xs={6}>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className='mb-3'>

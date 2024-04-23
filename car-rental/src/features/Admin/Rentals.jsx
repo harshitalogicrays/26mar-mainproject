@@ -1,9 +1,36 @@
-import React from 'react'
+import React, { useState } from 'react'
 import useFetchCollection from '../../customhook/useFetchCollection'
 import { Table } from 'react-bootstrap'
+import { toast } from 'react-toastify'
+import { Timestamp, doc, setDoc } from 'firebase/firestore'
+import { db } from '../../firebase/config'
+import emailjs from '@emailjs/browser';
+
+
 
 const Rentals = () => {
     const {data:bookings}=useFetchCollection("bookings")
+    let handleChange=async(val,book)=>{
+      if(val !=''){
+        try{
+          const docRef=doc(db,"bookings",book.id)
+          await setDoc(docRef,{...book,bookingStatus:val,editedAt:Timestamp.now().toMillis()})
+          toast.success(`status updated for ${book.id}`) 
+          emailjs.send('service_5z8v37p', 'template_azndsyl',
+          {status:val,email:book.userEmail,sdate:book.details.sdate,edate:book.details.edate,price:book.amount,days:book.days}, {
+        publicKey: 'ouyyULNr1Fl9QYxiJ',
+            })
+            .then(() => {
+              toast.info('mail sent successfullly')
+               },
+              (error) => {  console.log('FAILED...', error.text); }, );    
+        }
+        catch(error){
+            toast.error(error.message)
+        }
+      }
+     
+    }
   return (
     <>
         <Table striped bordered hover>
@@ -35,10 +62,12 @@ const Rentals = () => {
           <td>
             
             <div class="mb-3">
-                <select  >
-                    <option value='' selected disabled>Select one</option>
-                    <option>Confirm</option>
-                    <option>Cancel</option>
+                <select  defaultValue={book.bookingStatus} 
+                onChange={(e)=>handleChange(e.target.value,book)}>
+                    <option value=''>Select one</option>
+                    <option>Confirmed</option>
+                    <option>Cancelled</option>
+                    <option value='Done'>Ride Done</option>
                 </select>
             </div>
             
@@ -46,7 +75,7 @@ const Rentals = () => {
         </tr>
         )}
             </tbody>
-    </Table>
+        </Table>
     </>
   )
 }

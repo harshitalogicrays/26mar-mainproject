@@ -137,7 +137,7 @@ const Header = () => {
                             fontWeight: isActive ? "bold" : "",
                             color: isActive ? "white" : ""
                             };
-                        }} to='/'><FaListAlt/> My Orders</Nav.Link>
+                        }} to='/mybookings'><FaListAlt/> My Bookings</Nav.Link>
                 <Nav.Link ><Logout/></Nav.Link>
             </ShowOnLogIn>
           </Nav>
