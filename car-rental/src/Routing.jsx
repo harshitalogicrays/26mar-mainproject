@@ -45,7 +45,7 @@ const router = createBrowserRouter([
         {path:"bookingpayment",element:<UserLayout><BookingPayment/></UserLayout>},
         {path:'thankyou',element:<Thankyou/>},
         {path:'mybookings',element:<UserLayout><MyBookings/></UserLayout>},
-        {path:'admin' , element:<Dashboard/>,
+        {path:'admin' , element:<AdminLayout/>,
       children:[
           {path:'',element:<Dashboard/>},
           {path:'addbrand',element:<AddBrand/>},
