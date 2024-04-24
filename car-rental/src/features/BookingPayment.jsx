@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 import { Elements } from '@stripe/react-stripe-js';
 const stripePromise = loadStripe("pk_test_51NOvqGSAvExKFAjaCl4fAxmf3CFJlq54guOtblHh0nEuB7XGZ9KXvKSgHgjjiIc0kexx4SUn67Z4iXDBB9q3fevA0096oZR8bw");
 
-
 const BookingPayment = () => {
     const [clientSecret, setClientSecret] = useState("");
     const amount=useSelector(selectTotalPrice)
